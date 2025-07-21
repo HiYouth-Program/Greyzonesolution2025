@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support Knowledge Base</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a73e8;
+            --secondary: #0d47a1;
+            --accent: #f9ab00;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --gray: #5f6368;
+            --light-gray: #dadce0;
+            --success: #34a853;
+            --danger: #ea4335;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e3f2fd, #f5f7fa);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            background: var(--accent);
+            padding: 10px;
+            border-radius: 50%;
+            color: var(--dark);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0 auto 15px;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .tab {
+            padding: 10px 25px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 30px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: var(--accent);
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .tab:hover:not(.active) {
+            background: rgba(255,255,255,0.25);
+        }
+        
+        .search-container {
+            padding: 30px;
+            background: var(--light);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        #searchInput {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        #searchInput:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+        
+        #searchInput::placeholder {
+            color: var(--gray);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 0.9rem;
+            padding: 0 10px;
+        }
+        
+        .results-container {
+            padding: 0 30px 30px;
+            display: none;
+        }
+        
+        .results-container.active {
+            display: block;
+        }
+        
+        .results-header {
+            margin: 25px 0 15px;
+            font-size: 1.3rem;
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .result-count {
+            background: #e8f0fe;
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .qa-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .qa-item {
+            background: white;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        .qa-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .driver-question {
+            background: #f0f7ff;
+            padding: 18px 25px;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .question-id {
+            background: var(--accent);
+            color: var(--dark);
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        
+        .support-answer {
+            padding: 25px;
+            background: white;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .support-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 3px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .highlight {
+            background-color: #fef9c3;
+            padding: 0 3px;
+            font-weight: 600;
+            border-radius: 3px;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+            font-size: 1.2rem;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+        
+        .instructions {
+            background: #e8f0fe;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin-top: 25px;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            font-size: 0.95rem;
+        }
+        
+        .content-management {
+            padding: 30px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+        
+        .add-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group textarea, 
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-group textarea:focus, 
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .json-view {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            max-height: 300px;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+        
+        .json-key {
+            color: #f92672;
+        }
+        
+        .json-string {
+            color: #a6e22e;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--gray);
+            font-size: 0.95rem;
+            background: var(--light);
+            border-top: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .deploy-info {
+            background: #e8f0fe;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+        
+        .deploy-info h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .step {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--dark);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .add-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .qa-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                padding-top: 20px;
+            }
+            
+            .logo {
+                position: static;
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                margin-bottom: 10px;
+            }
+            
+            footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-headset"></i>
+                <span>SupportBase</span>
+            </div>
+            
+            <div class="header-content">
+                <h1>Customer Support Knowledge Base</h1>
+                <p class="subtitle">Search for any keyword to find the right answers for driver inquiries</p>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="search">Search Knowledge</div>
+                    <div class="tab" data-tab="manage">Manage Content</div>
+                    <div class="tab" data-tab="deploy">Deployment Guide</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Enter keyword (e.g. address, package, pictures, deliver...)">
+                <button class="btn btn-primary" id="searchButton">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+            
+            <div class="stats">
+                <div id="lastUpdated">Last updated: Today</div>
+                <div id="totalQAs">Total Q&As: 28</div>
+            </div>
+        </div>
+        
+        <!-- Search Results Tab -->
+        <div class="results-container active" id="searchResults">
+            <div class="results-header">
+                <h2>Search Results</h2>
+                <div class="result-count"><span id="resultCount">0</span> results</div>
+            </div>
+            <div id="results"></div>
+        </div>
+        
+        <!-- Content Management Tab -->
+        <div class="results-container" id="manageContent">
+            <div class="content-management">
+                <h2 class="section-title">Manage Knowledge Base Content</h2>
+                
+                <div class="instructions">
+                    <i class="fas fa-info-circle"></i> Add new Q&A pairs below. The system will automatically update the search index. Use the JSON format for bulk updates.
+                </div>
+                
+                <div class="add-form">
+                    <div class="form-group">
+                        <label for="newQuestion">Driver Question:</label>
+                        <textarea id="newQuestion" placeholder="Enter the driver's question..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newAnswer">Support Answer:</label>
+                        <textarea id="newAnswer" placeholder="Enter the support answer..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="actions">
+                    <button class="btn btn-outline" id="previewBtn">
+                        <i class="fas fa-eye"></i> Preview
+                    </button>
+                    <button class="btn btn-primary" id="addBtn">
+                        <i class="fas fa-plus"></i> Add to Knowledge Base
+                    </button>
+                </div>
+                
+                <div class="section-title">Current Q&A Data (JSON Format)</div>
+                <div class="instructions">
+                    <i class="fas fa-code"></i> Copy and modify this JSON to update multiple entries at once. Changes will take effect immediately after saving.
+                </div>
+                
+                <div class="json-view" id="jsonData">
+                    <!-- JSON data will be inserted here -->
+                </div>
+                
+                <div class="actions">
+                    <button class="btn btn-outline" id="copyBtn">
+                        <i class="fas fa-copy"></i> Copy JSON
+                    </button>
+                    <button class="btn btn-success" id="saveBtn">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Deployment Guide Tab -->
+        <div class="results-container" id="deployGuide">
+            <div class="content-management">
+                <h2 class="section-title">Deployment Guide for Team Access</h2>
+                
+                <div class="instructions">
+                    <i class="fas fa-share-alt"></i> Follow these steps to make this knowledge base accessible to your entire team
+                </div>
+                
+                <div class="deploy-info">
+                    <h3><i class="fab fa-github"></i> Free Hosting with GitHub Pages</h3>
+                    <p>GitHub Pages provides free static website hosting. Here's how to deploy:</p>
+                    
+                    <div class="steps">
+                        <div class="step">
+                            <span class="step-number">1</span>
+                            Create a new GitHub repository named "support-knowledge-base"
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">2</span>
+                            Upload the <code>index.html</code> file and <code>data.json</code> to the repository
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">3</span>
+                            Go to Repository Settings → Pages → Select "main" branch → Save
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">4</span>
+                            Your site will be published at: <code>https://[username].github.io/support-knowledge-base/</code>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="deploy-info">
+                    <h3><i class="fas fa-cloud-upload-alt"></i> Alternative Deployment Options</h3>
+                    
+                    <div class="steps">
+                        <div class="step">
+                            <h4>Netlify</h4>
+                            <p>Drag and drop the project folder to Netlify for automatic deployment with continuous updates.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Shared Hosting</h4>
+                            <p>Upload files to any web server. No backend required - just HTML, CSS and JavaScript.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h4>Intranet</h4>
+                            <p>Host on your company intranet by placing files on a network share accessible to all team members.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <i class="fas fa-sync-alt"></i> To update content, simply modify the <code>data.json</code> file and re-upload. All team members will see updates immediately.
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="copyright">
+                &copy; 2023 Customer Support Knowledge Base | Version 1.2
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+                <a href="#"><i class="fas fa-user-shield"></i> Admin</a>
+                <a href="#"><i class="fas fa-history"></i> Changelog</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Q&A data (stored in JSON format for easy updates)
+        let qaData = [
+            {
+                id: 1,
+                driver: "Can not find the address on the map?",
+                support: "Please provide us a clear and big label pic, we will verify the address for you. Solution: manually search the address on Google Maps and try to locate it (make sure you double check the full address and zipcode). If you still can not find it, please use Google search to see if any results are available."
+            },
+            {
+                id: 2,
+                driver: "Meet the customer, what pictures should I take?",
+                support: "Same as usual, we need 5 pictures for the POD (label pic, house no., package location, GPS, Building Pic). But if you meet the customer, you should take a picture showing the customer has the package in their hand (this pic will be used as a replacement of package location)."
+            },
+            {
+                id: 3,
+                driver: "I got multiple packages going to one location, what should I do?",
+                support: "Please sign each of them one by one and make sure you upload the right label pic. It must match with the waybill number before you sign it. Since it's the same address, those packages share the same picture for package location, house number, GPS, and Building Pic. Only the label pic is different."
+            },
+            {
+                id: 4,
+                driver: "What should I do when I find that I delivered a package to the wrong address?",
+                support: "You should visit the wrong address where you dropped the package off and collect the package back from the house owner. If they give it to you, you should redeliver it to the right address and recipient. Send us the new POD for modification. If it's expired, we will submit the new POD to the station to proceed with further operations."
+            },
+            {
+                id: 5,
+                driver: "I will be a bit late.",
+                support: "Ok, please always give us an ETA if you are late. And try to make it on time next time."
+            },
+            {
+                id: 6,
+                driver: "I got an emergency, my car is broken, I can not continue.",
+                support: "Hi, safety first. Make sure you pull over in a safe spot. Please let us know how many packages you have left. We will try to dispatch a driver nearby to pick those up from your location. If your car is movable, we will send you a location to send the packages to the driver near you."
+            },
+            {
+                id: 7,
+                driver: "What time can I get paid?",
+                support: "We count your salary from Monday to Sunday. You started on Date: XXX. If you need any advance going forward, let us know. We will calculate your salary and let you know how much we can advance later."
+            },
+            {
+                id: 8,
+                driver: "I got two packages with exact same waybill, what should I do?",
+                support: "You should sign one of them as delivered, and bring the other back to the station the next day. Please write 'duplicated package' on the package before returning it."
+            },
+            {
+                id: 9,
+                driver: "Some packages were marked with wrong number?",
+                support: "This would happen sometimes. Please double check the waybill number to verify what package number it actually is."
+            },
+            {
+                id: 10,
+                driver: "What time should I clock in?",
+                support: "We ask drivers to pre-clock in between 6pm-8pm every day. Once you clock in, you must show up the next day as the task will be assigned based on the clock-in name list."
+            },
+            {
+                id: 11,
+                driver: "What should I do with the package? It's a business address and they are closed at the moment.",
+                support: "We only deliver this kind of packages when they are in business hours. You can fail this package for 'business closed'. Check if there is any info on the door or somewhere that tells you what time they would open. Usually businesses open after 10am. You should come back to this location later if they open later."
+            },
+            {
+                id: 12,
+                driver: "I can not find the address anyway.",
+                support: "Please fail it for 'bad address' and bring it back next day."
+            },
+            {
+                id: 13,
+                driver: "It looks like this package is empty?",
+                support: "Is it empty when you had the package this morning? Or is it damaged after you collected it? Please take this package back to the station the next day and ask our route manager to assist you with the return process. If it was empty this morning, you should not have taken it but returned it directly to the warehouse staff."
+            },
+            {
+                id: 14,
+                driver: "What should I do with package going to an apartment?",
+                support: "For apartment packages, we need to bring the package inside the building—definitely not drop it off at the gate or outside of the apartment building. You need to take a photo of: Label pic, the unit number, building pic, room number, package location, and GPS."
+            },
+            {
+                id: 15,
+                driver: "Can I leave a package in the mailbox?",
+                support: "No, we can't leave a package in any type of mailbox (private or public). We can only drop it off at the door front. If you did leave it in a mailbox, please take it out and deliver it to the customer's door front."
+            },
+            {
+                id: 16,
+                driver: "Can we deliver to USPS (United States Postal Service)?",
+                support: "No, we cannot deliver to any USPS address, facilities, mailbox, or offices. Please fail the package for 'bad address' and write 'USPS postal office' on the package. Bring the package back to the station the next day."
+            },
+            {
+                id: 17,
+                driver: "Can we deliver to UPS, DHL, FedEx?",
+                support: "Yes, we can deliver to those places or offices, facilities."
+            },
+            {
+                id: 18,
+                driver: "I cannot access the apartment or building?",
+                support: "Please call and text the customer for the access code. If you cannot reach the customer, please wait there for a few minutes until someone comes out or goes in, so you can get in along with them."
+            },
+            {
+                id: 19,
+                driver: "Can I leave the package at a reception desk or indoor mailroom or package collection point?",
+                support: "Yes, you can. Please text the customer with pictures of the package and package location, and ask them to collect this package at their convenience."
+            },
+            {
+                id: 20,
+                driver: "The recipient asked me to drop it off at the door front, what should I do?",
+                support: "Please text the recipient with a message confirming that he/she requested you to drop it off at the front door/gate and that they are OK with it. Screenshot this message and upload it along with all the rest of the packages."
+            },
+            {
+                id: 21,
+                driver: "I cannot see my task anymore, I accidentally hit 'end the route'.",
+                support: "Please go to the home page. There is a historical button on the top right corner. Hit it, and hit 'continue delivery'. The task will resume."
+            },
+            {
+                id: 22,
+                driver: "I got one package missing today, and I am done with my task. Should I end the route manually?",
+                support: "Just leave it. No need to end it. We will keep searching for this missing package."
+            },
+            {
+                id: 23,
+                driver: "I have another member's package.",
+                support: "Please transfer this package to your task. Hit scan button → select receipt of transfer → scan the package again → hit go to delivery."
+            },
+            {
+                id: 24,
+                driver: "The customer refused to take the package.",
+                support: "Please fail this package for 'bad address', and write 'Customer refuse' on the package and bring it back the next day."
+            },
+            {
+                id: 25,
+                driver: "I need gas money.",
+                support: "We understand. Please let us review your work data and let us know how much you need for gas. Please give us your CashApp or Zelle to send the payment later."
+            },
+            {
+                id: 26,
+                driver: "Can I deliver the rest packages till next day?",
+                support: "Sorry, we cannot. All the assigned packages need to be sent out before 10PM. Sometimes we can extend it until 23:59. So please try to deliver them all if possible."
+            },
+            {
+                id: 27,
+                driver: "I cannot, I have to go now.",
+                support: "Alright, please hold on. Let us check who is nearby. We will send you a location to send the rest packages to. Please also assist other members with package transfer."
+            },
+            {
+                id: 28,
+                driver: "The system gives a different address, and it's not the same as the label. What should I do?",
+                support: "If you find the system address doesn't match the label, please call and text the customer first for confirmation. Based on instructions from the station, the system address is the final and latest one. The customer might have changed the address last minute after they printed the label. So the system is always our priority. If you aren't confident about such delivery, you can also fail this package for 'bad address' if you could not reach the customer via phone call or messages."
+            }
+        ];
+
+        // DOM Elements
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const resultsContainer = document.getElementById('results');
+        const resultCount = document.getElementById('resultCount');
+        const totalQAs = document.getElementById('totalQAs');
+        const jsonDataElement = document.getElementById('jsonData');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.results-container');
+        const newQuestion = document.getElementById('newQuestion');
+        const newAnswer = document.getElementById('newAnswer');
+        const addBtn = document.getElementById('addBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const previewBtn = document.getElementById('previewBtn');
+
+        // Initialize the application
+        function init() {
+            // Set stats
+            totalQAs.textContent = `Total Q&As: ${qaData.length}`;
+            updateLastUpdated();
+            
+            // Render JSON data
+            renderJSONData();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Show initial message
+            resultsContainer.innerHTML = `
+                <div class="no-results">
+                    <i class="fas fa-search fa-2x" style="margin-bottom: 15px;"></i><br>
+                    Enter a keyword above to search our knowledge base<br>
+                    <small>Try "address", "package", or "pictures"</small>
+                </div>
+            `;
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            searchInput.addEventListener('input', searchKnowledgeBase);
+            searchButton.addEventListener('click', searchKnowledgeBase);
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === `${tabName}Results` || content.id === `${tabName}Content` || content.id === `${tabName}Guide`) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Add new Q&A
+            addBtn.addEventListener('click', addNewQA);
+            
+            // Save JSON changes
+            saveBtn.addEventListener('click', saveJSONChanges);
+            
+            // Copy JSON
+            copyBtn.addEventListener('click', copyJSON);
+            
+            // Preview new Q&A
+            previewBtn.addEventListener('click', previewNewQA);
+        }
+
+        // Highlight search terms in text
+        function highlightText(text, searchTerm) {
+            if (!searchTerm) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // Search function
+        function searchKnowledgeBase() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-keyboard fa-2x" style="margin-bottom: 15px;"></i><br>
+                        Please enter a search term to find answers
+                    </div>
+                `;
+                resultCount.textContent = '0';
+                return;
+            }
+            
+            const results = qaData.filter(item => {
+                return item.driver.toLowerCase().includes(searchTerm) || 
+                       item.support.toLowerCase().includes(searchTerm);
+            });
+            
+            resultCount.textContent = results.length;
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search-minus fa-2x" style="margin-bottom: 15px;"></i><br>
+                        No results found for "${searchTerm}"<br>
+                        Try different keywords like "address", "package", or "pictures"
+                    </div>
+                `;
+                return;
+            }
+            
+            let resultsHTML = '<div class="qa-list">';
+            
+            results.forEach(item => {
+                const highlightedDriver = highlightText(item.driver, searchTerm);
+                const highlightedSupport = highlightText(item.support, searchTerm);
+                
+                resultsHTML += `
+                    <div class="qa-item">
+                        <div class="driver-question">
+                            ${highlightedDriver}
+                            <span class="question-id">ID: ${item.id}</span>
+                        </div>
+                        <div class="support-answer">
+                            <span class="support-label">SUPPORT</span>
+                            ${highlightedSupport}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsHTML += '</div>';
+            resultsContainer.innerHTML = resultsHTML;
+        }
+
+        // Add new Q&A
+        function addNewQA() {
+            const question = newQuestion.value.trim();
+            const answer = newAnswer.value.trim();
+            
+            if (!question || !answer) {
+                alert('Please enter both a question and an answer');
+                return;
+            }
+            
+            const newId = qaData.length > 0 ? Math.max(...qaData.map(item => item.id)) + 1 : 1;
+            
+            qaData.push({
+                id: newId,
+                driver: question,
+                support: answer
+            });
+            
+            // Clear form
+            newQuestion.value = '';
+            newAnswer.value = '';
+            
+            // Update UI
+            updateLastUpdated();
+            totalQAs.textContent = `Total Q&As: ${qaData.length}`;
+            renderJSONData();
+            
+            // Show success message
+            alert(`New Q&A added successfully! ID: ${newId}`);
+        }
+
+        // Preview new Q&A
+        function previewNewQA() {
+            const question = newQuestion.value.trim();
+            const answer = newAnswer.value.trim();
+            
+            if (!question && !answer) {
+                alert('Please enter a question and answer to preview');
+                return;
+            }
+            
+            const previewHTML = `
+                <div class="qa-item" style="margin-top: 20px;">
+                    <div class="driver-question">
+                        ${question || '[No question entered]'}
+                        <span class="question-id">PREVIEW</span>
+                    </div>
+                    <div class="support-answer">
+                        <span class="support-label">SUPPORT</span>
+                        ${answer || '[No answer entered]'}
+                    </div>
+                </div>
+            `;
+            
+            // Insert preview above the form
+            const form = document.querySelector('.add-form');
+            form.insertAdjacentHTML('afterend', previewHTML);
+        }
+
+        // Render JSON data
+        function renderJSONData() {
+            const jsonString = JSON.stringify(qaData, null, 2);
+            // Simple syntax highlighting
+            const highlighted = jsonString
+                .replace(/("[\w]+":)/g, '<span class="json-key">$1</span>')
+                .replace(/(".*?")/g, '<span class="json-string">$1</span>');
+            
+            jsonDataElement.innerHTML = highlighted;
+        }
+
+        // Save JSON changes
+        function saveJSONChanges() {
+            try {
+                // In a real app, this would save to a file or database
+                // For this demo, we'll just parse to validate
+                JSON.parse(jsonDataElement.textContent);
+                
+                // Show success
+                alert('Changes saved successfully! The knowledge base has been updated.');
+                updateLastUpdated();
+            } catch (e) {
+                alert('Invalid JSON format. Please check your syntax.');
+                console.error(e);
+            }
+        }
+
+        // Copy JSON to clipboard
+        function copyJSON() {
+            const textArea = document.createElement('textarea');
+            textArea.value = JSON.stringify(qaData, null, 2);
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Show feedback
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+            }, 2000);
+        }
+
+        // Update last updated timestamp
+        function updateLastUpdated() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('lastUpdated').textContent = 
+                `Last updated: ${now.toLocaleDateString('en-US', options)}`;
+        }
+
+        // Initialize the app when page loads
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
